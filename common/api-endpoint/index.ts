@@ -1,12 +1,5 @@
 import { Request, Response, Errback } from 'express';
-
-export interface EndpointParams {
-  status?: number;
-}
-
-export interface Endpoint extends Response {
-  endpoint(data: object, params?: EndpointParams): void;
-}
+import { EndpointParams, Endpoint } from './api-endpoint.interfaces';
 
 const DEFAULT_STATUS = 200;
 
@@ -19,15 +12,15 @@ function endpointFn(res: Response, data: object, params: EndpointParams = {}): v
 }
 
 export const errorEndpoint = (err: Errback, req: Request, res: Endpoint, next: any): void => {
-  res.endpoint({
+  res.reply({
     error: 'error',
   });
 };
 
-const endpoint = (req: Request, res: Endpoint, next: any): void => {
-  res.endpoint = endpointFn.bind(null, res);
+const reply = (req: Request, res: Endpoint, next: any): void => {
+  res.reply = endpointFn.bind(null, res);
 
   next();
 };
 
-export default endpoint;
+export default reply;
