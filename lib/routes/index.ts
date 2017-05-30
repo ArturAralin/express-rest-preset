@@ -1,13 +1,29 @@
+import { AppRouter } from '../../common/router';
+import * as joi from 'joi';
 import { Router, Request } from 'express';
 import { Endpoint } from '../../common/api-endpoint/api-endpoint.interfaces';
 
-const expressPromiseRouter = require('express-promise-router');
-const router: Router = expressPromiseRouter();
-
-router.get('/', (req: Request, res: Endpoint) => {
+const ctrl: any = (req: Request, res: Endpoint): void => {
   res.reply({
-    hello: 'world',
+    ok: 123,
   });
-});
+};
 
-export default router;
+export const index: AppRouter[] = [
+  {
+    path: '/',
+    method: 'get',
+    controller: ctrl,
+    validator: {
+      key: joi.string(),
+    },
+  },
+  {
+    path: '/post',
+    method: 'post',
+    controller: ctrl,
+    validator: {
+      abc: joi.string(),
+    },
+  },
+];
