@@ -1,4 +1,6 @@
 import { Request, Response, Errback, NextFunction } from 'express';
+import { pick } from 'ramda';
+import AppError from '../error-default';
 
 const DEFAULT_STATUS = 200;
 
@@ -10,10 +12,10 @@ function endpointFn(res: Response, data: object, params: App.EndpointParams = {}
     .json(data);
 }
 
-export const errorEndpoint = (err: Errback, req: Request, res: App.Endpoint, next: NextFunction): void => {
-  res.reply({
-    error: 'error',
-  });
+export const errorEndpoint = (err: AppError, req: Request, res: App.Endpoint, next: NextFunction): void => {
+  const response = pick(['status', 'message', 'info'], err);
+
+  res.status(err.status).json(response);
 };
 
 const reply = (req: Request, res: App.Endpoint, next: NextFunction): void => {
