@@ -1,13 +1,6 @@
 import { AppRouter } from '../../common/router';
 import * as joi from 'joi';
-import { Router, Request } from 'express';
-import { Endpoint } from '../../common/api-endpoint/api-endpoint.interfaces';
-
-const ctrl: any = (req: Request, res: Endpoint): void => {
-  res.reply({
-    ok: 123,
-  });
-};
+import { ctrl } from '../controllers/index';
 
 export const index: AppRouter[] = [
   {
