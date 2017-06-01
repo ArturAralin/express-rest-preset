@@ -13,15 +13,13 @@ function endpointFn(res: Response, data: object, params: App.EndpointParams = {}
 }
 
 export const errorEndpoint = (err: AppError, req: Request, res: App.Endpoint, next: NextFunction): void => {
-  const response = pick(['status', 'message', 'info'], err);
+  const response = pick(['code', 'message', 'info'], err);
 
   res.status(err.status).json(response);
 };
 
-const reply = (req: Request, res: App.Endpoint, next: NextFunction): void => {
+export const attachReply = (req: Request, res: App.Endpoint, next: NextFunction): void => {
   res.reply = endpointFn.bind(null, res);
 
   next();
 };
-
-export default reply;
