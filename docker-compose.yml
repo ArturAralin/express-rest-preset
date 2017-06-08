@@ -1,0 +1,8 @@
+version: "3"
+services:
+  app:
+    container_name: express_preset
+    build: .
+    volumes:
+      - .:/app
+    command: "npm run build:live"

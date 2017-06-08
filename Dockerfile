@@ -1,0 +1,3 @@
+FROM node:7
+ENV HOME=/app
+WORKDIR $HOME

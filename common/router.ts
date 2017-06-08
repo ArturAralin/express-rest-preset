@@ -6,7 +6,7 @@ import { flatten, map, pipe, values, curryN, not } from 'ramda';
 import expressPromiseRouter = require('express-promise-router');
 import ValidationError from '../lib/errors/validation';
 
-type HTTPMethods = "options" | "get" | "head" | "post" | "put" | "delete" | "trace" | "connect";
+type HTTPMethods = 'options' | 'get' | 'head' | 'post' | 'put' | 'delete' | 'trace' | 'connect';
 type Middleware = (req: Request, res: Response, next: NextFunction) => void;
 
 export interface AppRouter {

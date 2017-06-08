@@ -10,6 +10,8 @@ const logger = createLogger('api-endpoint');
 function endpointFn(res: Response, data: object, params: App.EndpointParams = {}): void {
   const { status } = params;
 
+  logger.debug(data as any);
+
   res
     .status(status || DEFAULT_STATUS)
     .json(data);
