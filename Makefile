@@ -5,7 +5,7 @@ stop:
 	docker-compose down
 
 dlogs:
-	docker-compose logs -f
+	docker-compose logs -f --tail 100
 
 shell:
 	docker-compose exec app bash
