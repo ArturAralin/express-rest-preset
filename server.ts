@@ -1,13 +1,10 @@
 import * as express from 'express';
 import * as apiEndpoint from './common/api-endpoint';
 import RootRouter from './common/router';
-import config from './common/config';
-import { createLogger } from './common/logger';
 import * as bodyParser from 'body-parser';
 import NotFound from './lib/errors/notfound';
 
 const app: express.Express = express();
-const log = createLogger('app');
 
 /* Configuration */
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -21,6 +18,4 @@ app.use((req: express.Request, res: express.Response, next: express.NextFunction
   apiEndpoint.errorEndpoint(new NotFound(), req, res as App.Endpoint, next);
 });
 
-app.listen(config.app.port, () => {
-  log.info(`Server started on ${config.app.port}`);
-});
+export default app;
