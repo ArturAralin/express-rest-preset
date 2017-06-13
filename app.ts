@@ -16,9 +16,9 @@ app.use(apiEndpoint.attachReply);
 app.use(RootRouter);
 app.use(apiEndpoint.errorEndpoint);
 
+/* 404 endpoint */
 app.use((req: express.Request, res: express.Response, next: express.NextFunction): void => {
-  // TOTO fix it
-  apiEndpoint.errorEndpoint(new NotFound(), req, res as any, next);
+  apiEndpoint.errorEndpoint(new NotFound(), req, res as App.Endpoint, next);
 });
 
 app.listen(config.app.port, () => {
