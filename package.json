@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "e2e": "NODE_ENV=test ./node_modules/.bin/mocha -r ./node_modules/ts-node/register ./tests/e2e/*",
+    "test": "npm run e2e",
     "start": "npm run build:live",
     "build:live": "NODE_ENV=dev NODE_PATH=. ./node_modules/.bin/nodemon --exec ./node_modules/.bin/ts-node --cache-directory=.. ./bin/www.ts"
   },
@@ -34,7 +35,11 @@
     "typescript": "^2.3.2"
   },
   "devDependencies": {
+    "@types/chai-as-promised": "0.0.31",
+    "@types/supertest": "^2.0.0",
+    "chai-as-promised": "^7.0.0",
     "nodemon": "^1.11.0",
+    "supertest": "^3.0.0",
     "ts-node": "^3.0.4",
     "tslint": "^5.2.0"
   },

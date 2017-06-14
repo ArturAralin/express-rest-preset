@@ -5,10 +5,11 @@ import { LoggerSettings } from '../../config/$config.interface';
 import { pipe, prop, equals } from 'ramda';
 import * as path from 'path';
 
-const DEFAULT_LEVEL = 'all';
-
 const LOGGERS: Logger[] = [];
-const LOGGERS_CONFIGS: LoggerSettings[] = config.logger;
+const LOGGERS_CONFIGS = config.logger;
+const DEFAULT_LEVEL = config.logger.default.level.toLocaleLowerCase();
+
+const log = log4js.getLogger('logger-module');
 
 const log4jsConfig: log4js.IConfig = {
   appenders: [
@@ -29,9 +30,15 @@ log4js.configure(log4jsConfig);
 const findConfig = (targetNamespaces: string) =>
   pipe(prop('namespaces'), equals(targetNamespaces));
 
-export const createLogger = (loggerNamespaces: string): Logger => {
-  const logger: Logger = log4js.getLogger(loggerNamespaces);
-  const config = LOGGERS_CONFIGS.find(findConfig(loggerNamespaces)) as LoggerSettings;
+export const createLogger = (namespace: string): Logger => {
+  const loggerNamespace = namespace.toLocaleLowerCase();
+
+  if (loggerNamespace === DEFAULT_LEVEL) {
+    log.warn('Can\'t use the name "default", because it is reserved');
+  }
+
+  const logger: Logger = log4js.getLogger(loggerNamespace);
+  const config: LoggerSettings = LOGGERS_CONFIGS[loggerNamespace];
   const level = config ? config.level.toLowerCase() : DEFAULT_LEVEL;
 
   logger.setLevel(level);

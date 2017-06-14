@@ -6,12 +6,11 @@ interface Server {
 
 /* Logs Settings */
 export interface LoggerSettings {
-  namespaces: string;
   level: string;
 }
 
 /* Common interfaces */
 export interface Config {
   app: Server;
-  logger: LoggerSettings[];
+  logger: { [name: string]: LoggerSettings };
 }
