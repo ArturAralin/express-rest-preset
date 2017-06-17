@@ -2,6 +2,7 @@ import { Request, Response, Errback, NextFunction } from 'express';
 import { pick } from 'ramda';
 import AppError from '../error-default';
 import { createLogger } from '../logger';
+import UnexpectedError from '../../lib/errors/unexpected';
 
 const DEFAULT_STATUS = 200;
 
@@ -18,11 +19,21 @@ function endpointFn(res: Response, data: object, params: App.EndpointParams = {}
 }
 
 export const errorEndpoint = (err: AppError, req: Request, res: App.Endpoint, next: NextFunction): void => {
-  const response = pick(['code', 'message', 'info'], err);
+  let error = err;
 
-  logger.error(`code: ${err.code}, info: ${err.info || err.message}`);
+  if (!err.code && !err.status) {
+    const stack = (err as any).stack;
 
-  res.status(err.status).json(response);
+    error = new UnexpectedError({ stack });
+  }
+
+  const response = pick(['code', 'message', 'info'], error);
+
+  logger.error(`code: ${error.code}, info: ${error.info || error.message}`);
+
+  res
+    .status(error.status)
+    .json(response);
 };
 
 export const attachReply = (req: Request, res: App.Endpoint, next: NextFunction): void => {

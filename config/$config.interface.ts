@@ -11,6 +11,7 @@ export interface LoggerSettings {
 
 /* Common interfaces */
 export interface Config {
+  env: string;
   app: Server;
   logger: { [name: string]: LoggerSettings };
 }

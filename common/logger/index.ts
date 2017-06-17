@@ -4,18 +4,20 @@ import config from '../config';
 import { LoggerSettings } from '../../config/$config.interface';
 import { pipe, prop, equals } from 'ramda';
 import * as path from 'path';
+import * as moment from 'moment';
 
 const LOGGERS: Logger[] = [];
 const LOGGERS_CONFIGS = config.logger;
 const DEFAULT_LEVEL = config.logger.default.level.toLocaleLowerCase();
+const loggerFilename = `${moment().format('DD-MM-YYYY-HH:mm:ss')}_${config.env}.log`;
 
 const log = log4js.getLogger('logger-module');
 
 const log4jsConfig: log4js.IConfig = {
   appenders: [
     {
-      type: "file",
-      filename: "logs/main.log",
+      type: "dateFile",
+      filename: `logs/${loggerFilename}`,
       compress: true,
       maxLogSize: 10 * 1024 * 1024,
     },
