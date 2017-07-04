@@ -2,10 +2,12 @@
   "app": {
     "host": "127.0.0.1"
   },
-  "logger": [
-    {
-      "namespaces": "app",
+  "logger": {
+    "default": {
+      "level": "all"
+    },
+    "app": {
       "level": "all"
     }
-  ]
+  }
 }

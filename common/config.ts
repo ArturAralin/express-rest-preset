@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs';
-import { pipe, map, apply } from 'ramda';
+import { pipe, map, apply, assoc } from 'ramda';
 import { Config } from '../config/$config.interface';
-import {resolve} from 'path';
+import { resolve } from 'path';
 
 const assignDeep  = require('assign-deep');
 
@@ -12,7 +12,8 @@ const readConfigFile = (filename: string) =>
 
 const config: Config = pipe(
     map(pipe(readConfigFile, JSON.parse)),
-    apply(assignDeep))
+    apply(assignDeep),
+    assoc('env', env))
   (['common', env]) as Config;
 
 export default config;

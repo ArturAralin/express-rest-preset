@@ -1,6 +1,6 @@
 import { AppRouter } from '../../common/router';
 import * as joi from 'joi';
-import { ctrl } from '../controllers/index';
+import { ctrl, ctrlWithError } from '../controllers/index';
 import { exampleMiddleware } from '../middlewares/example';
 
 export const index: AppRouter[] = [
@@ -26,5 +26,11 @@ export const index: AppRouter[] = [
     controller: ctrl,
     validator: {},
     middlewares: [exampleMiddleware],
+  },
+  {
+    path: '/unexpectederror',
+    method: 'get',
+    controller: ctrlWithError,
+    validator: {},
   },
 ];

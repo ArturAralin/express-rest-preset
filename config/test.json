@@ -1,0 +1,7 @@
+{
+  "logger": {
+    "default": {
+      "level": "info"
+    }
+  }
+}
