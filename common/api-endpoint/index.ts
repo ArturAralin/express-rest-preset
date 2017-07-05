@@ -34,5 +34,8 @@ export const errorEndpoint = (err: AppError, req: Request, res: App.Endpoint, ne
     .json(pick(['code', 'message', 'info'], error));
 };
 
-export const attachReply = (req: Request, res: App.Endpoint, next: NextFunction): void =>
-  assoc('reply', endpointFn.bind(null, res), res) && next();
+export const attachReply = (req: Request, res: App.Endpoint, next: NextFunction): void => {
+  res.reply = endpointFn.bind(null, res);
+
+  next();
+};
