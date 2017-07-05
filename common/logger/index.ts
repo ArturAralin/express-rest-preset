@@ -7,9 +7,11 @@ import * as path from 'path';
 import * as moment from 'moment';
 
 const LOGGERS: Logger[] = [];
-const LOGGERS_CONFIGS = config.logger;
-const DEFAULT_LEVEL = config.logger.default.level.toLocaleLowerCase();
-const loggerFilename = `${moment().format('DD-MM-YYYY-HH:mm:ss')}_${config.env}.log`;
+const LOGGERS_CONFIGS = config.logger.namespaces;
+const DEFAULT_LEVEL = config.logger.namespaces.default.level.toLocaleLowerCase();
+const loggerFilename = config.logger.writeInOneLogFile ?
+  `common_${config.env}.log` :
+  `${moment().format('DD-MM-YYYY-HH:mm:ss')}_${config.env}.log`;
 
 const log = log4js.getLogger('logger-module');
 

@@ -13,5 +13,8 @@ export interface LoggerSettings {
 export interface Config {
   env: string;
   app: Server;
-  logger: { [name: string]: LoggerSettings };
+  logger: {
+    namespaces: { [name: string]: LoggerSettings; };
+    writeInOneLogFile: boolean;
+  };
 }
