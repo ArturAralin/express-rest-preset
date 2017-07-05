@@ -1,5 +1,5 @@
 import { Request, Response, Errback, NextFunction } from 'express';
-import { pick } from 'ramda';
+import { pick, bind, assoc, defaultTo } from 'ramda';
 import AppError from '../error-default';
 import { createLogger } from '../logger';
 import UnexpectedError from '../../lib/errors/unexpected';
@@ -27,17 +27,12 @@ export const errorEndpoint = (err: AppError, req: Request, res: App.Endpoint, ne
     error = new UnexpectedError({ stack });
   }
 
-  const response = pick(['code', 'message', 'info'], error);
-
   logger.error(`code: ${error.code}, info: ${error.info || error.message}`);
 
   res
     .status(error.status)
-    .json(response);
+    .json(pick(['code', 'message', 'info'], error));
 };
 
-export const attachReply = (req: Request, res: App.Endpoint, next: NextFunction): void => {
-  res.reply = endpointFn.bind(null, res);
-
-  next();
-};
+export const attachReply = (req: Request, res: App.Endpoint, next: NextFunction): void =>
+  assoc('reply', endpointFn.bind(null, res), res) && next();
