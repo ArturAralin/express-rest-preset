@@ -15,7 +15,7 @@ app.use(apiEndpoint.errorEndpoint);
 
 /* 404 endpoint */
 app.use((req: express.Request, res: express.Response, next: express.NextFunction): void => {
-  apiEndpoint.errorEndpoint(new NotFound(), req, res as App.Endpoint, next);
+  apiEndpoint.errorEndpoint(new NotFound(req), req, res as App.Endpoint, next);
 });
 
 export default app;
