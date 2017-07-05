@@ -18,9 +18,21 @@ export interface AppRouter {
   // allowAccess: string[];
 }
 
-function joiValidator(schema: object): any {
+function joiValidator(keys: object, isGetRequest: boolean): any {
+  const keysCount = Object.keys(keys).length;
+
   return (req: Request , res: Response, next: NextFunction) => {
-    const validationError: joi.ValidationError = joi.validate(req.body, schema).error;
+    const data = isGetRequest ? req.query : req.body;
+    const dataKeysCount = Object.keys(data).length;
+
+    if (keysCount > 0 && dataKeysCount === 0) {
+      next(new ValidationError('Object must contains params'));
+
+      return;
+    }
+
+    const schema = joi.object().keys(keys as any);
+    const validationError: joi.ValidationError = joi.validate(data, schema).error;
 
     if (validationError) {
       next(new ValidationError(validationError));
@@ -38,7 +50,8 @@ pipe(values, flatten)(routes)
   .forEach(({ path, method, controller, validator, middlewares = [] }) => {
     const methodName = method.toLowerCase();
     const routerMethodFn = (rootRouter as any)[methodName];
-    const args = [path, joiValidator(validator), ...middlewares, controller];
+    const isGetRequest = methodName === 'get';
+    const args = [path, joiValidator(validator, isGetRequest), ...middlewares, controller];
 
     routerMethodFn.apply(rootRouter, args);
   });
